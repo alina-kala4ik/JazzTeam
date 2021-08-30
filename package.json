@@ -1,0 +1,47 @@
+{
+  "name": "jazzteam",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack-dev-server",
+    "server": "json-server-auth db.json -r routes.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alina-kala4ik/JazzTeam.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alina-kala4ik/JazzTeam/issues"
+  },
+  "homepage": "https://github.com/alina-kala4ik/JazzTeam#readme",
+  "devDependencies": {
+    "@babel/core": "7.15.0",
+    "@babel/preset-env": "7.15.0",
+    "@babel/preset-react": "7.14.5",
+    "babel-loader": "8.2.2",
+    "css-loader": "6.2.0",
+    "json-server": "0.16.3",
+    "json-server-auth": "2.1.0",
+    "mini-css-extract-plugin": "2.2.0",
+    "webpack": "5.51.1",
+    "webpack-cli": "4.8.0",
+    "webpack-dev-server": "4.0.0"
+  },
+  "dependencies": {
+    "axios": "0.21.1",
+    "history": "5.0.1",
+    "normalize.css": "8.0.1",
+    "prop-types": "15.7.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-redux": "7.2.4",
+    "react-router-dom": "5.2.1",
+    "redux": "4.1.1",
+    "redux-thunk": "2.3.0"
+  }
+}
