@@ -72,6 +72,17 @@ html {
   border-color: #62c7a5;
 }
 
+.login_error {
+  position: relative;
+  height: 20px;
+}
+
+.login_error p {
+  position: absolute;
+  color: #e44e4e;
+  margin: 0;
+}
+
 .login_submit {
   border: none;
   min-height: 52px;

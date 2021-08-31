@@ -1,15 +1,16 @@
 import React from "react";
-import {BrowserRouter, Switch, Route} from "react-router-dom";
+import {Router, Switch, Route} from "react-router-dom";
 import {PATCHES} from "../../utils";
 import Main from "../Main/Main";
 import Login from "../Login/Login";
 import Info from "../Info/Info";
 import Profile from "../Profile/Profile";
 import Table from "../Table/Table";
+import history from "../../history";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <Switch>
         <Route exact path={PATCHES.MAIN}>
           <Main/>
@@ -27,7 +28,7 @@ const App = () => {
           <Table/>
         </Route>
       </Switch>
-    </BrowserRouter>
+    </Router>
   )
 }
 

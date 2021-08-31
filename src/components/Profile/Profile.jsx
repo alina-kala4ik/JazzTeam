@@ -1,17 +1,41 @@
 import React from "react";
 import Header from "../Header/Header";
+import {connect} from "react-redux";
+import history from "../../history";
+import {PATCHES} from "../../utils";
+import PropTypes from "prop-types";
 
-const Profile = () => {
+const Profile = (props) => {
+  const {user} = props;
+
+  if (!user) {
+    history.push(PATCHES.LOGIN)
+    return null;
+  }
+
   return (
     <React.Fragment>
       <Header/>
+
       <div className="page profile">
-        <p>Имя: name</p>
-        <p>Фамилия: name</p>
-        <p>Отчество: name</p>
+        <p>Имя: {user.name}</p>
+        <p>Фамилия: {user.lastname}</p>
+        <p>Отчество: {user.secondname}</p>
       </div>
     </React.Fragment>
   )
 }
 
-export default Profile;
+Profile.propTypes = {
+  user: PropTypes.shape({
+    name: PropTypes.string,
+    lastname: PropTypes.string,
+    secondname: PropTypes.string
+  })
+}
+
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(Profile);

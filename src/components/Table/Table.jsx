@@ -2,6 +2,9 @@ import React, {useState} from "react";
 import Header from "../Header/Header";
 import Row from "../Row/Row";
 import Editing from "../Editing/Editing";
+import {connect} from "react-redux";
+import history from "../../history";
+import {PATCHES} from "../../utils";
 
 const contacts = {
   headers: {
@@ -39,7 +42,14 @@ const contacts = {
   ]
 }
 
-const Table = () => {
+const Table = (props) => {
+  const {user} = props;
+
+  if (!user) {
+    history.push(PATCHES.LOGIN)
+    return null;
+  }
+
   const {headers, data} = contacts;
 
   const [editingData, setEditingData] = useState(null);
@@ -98,4 +108,8 @@ const Table = () => {
   )
 }
 
-export default Table;
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(Table);

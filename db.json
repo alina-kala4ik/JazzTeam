@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "email": "admin@gmail.com",
+      "password": "$2a$10$BhOl/Dolrz/RI8.xQES6Dem4d8Dv.N5avcN7tmmswFDKvUrG.XIDC",
+      "id": 1,
+      "name": "Илья",
+      "lastname": "Васильев",
+      "secondname": "Петрович",
+      "img": "./img/1.png"
+    }
+  ]
+}

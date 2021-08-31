@@ -1,10 +1,12 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 import {PATCHES} from "../../utils";
+import {connect} from "react-redux";
+import PropTypes from "prop-types";
 
-const isLogin = false;
+const Header = (props) => {
+  const {user} = props;
 
-const Header = () => {
   return (
     <header className="header">
       <div className="header_menu">
@@ -14,18 +16,30 @@ const Header = () => {
         <NavLink className="header_link" activeClassName="active" exact to={PATCHES.TABLE}>Таблица</NavLink>
       </div>
 
-      {isLogin &&
+      {user &&
         <div className="header_profile">
-          <img alt="name" className="header_avatar" src="./img/1.png"/>
-          <p className="header_name">Name</p>
+          <img alt="name" className="header_avatar" src={user.img}/>
+          <p className="header_name">{user.name}</p>
         </div>
       }
 
-      {!isLogin &&
+      {!user &&
         <NavLink className="header_link" exact to={PATCHES.LOGIN}>Авторизация</NavLink>
       }
     </header>
   )
 }
 
-export default Header;
+Header.propTypes = {
+  user: PropTypes.shape({
+    img: PropTypes.string,
+    name: PropTypes.string
+  })
+}
+
+
+const mapStateToProps = (state) => ({
+  user: state.user
+})
+
+export default connect(mapStateToProps)(Header);
