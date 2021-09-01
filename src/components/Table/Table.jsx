@@ -1,69 +1,33 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import Header from "../Header/Header";
 import Row from "../Row/Row";
 import Editing from "../Editing/Editing";
 import {connect} from "react-redux";
 import history from "../../history";
 import {PATCHES} from "../../utils";
+import {operation} from "../../reducer";
+import PropTypes from "prop-types";
 
-const contacts = {
-  headers: {
-    name: 'Имя',
-    phone: 'Телефон',
-    email: 'Email',
-    bday: 'Дата рождения',
-    socialNumber: 'Номер соц. страха'
-  },
-  data: [
-    {
-      id: 1,
-      name: 'Елена',
-      phone: '+375 46 378-90-20',
-      email: 'test@mail.ru',
-      bday: '12.12.2000',
-      socialNumber: 7857487584
-    },
-    {
-      id: 2,
-      name: 'Петр',
-      phone: '+375 46 378-90-20',
-      email: 'test@mail.ru',
-      bday: '12.12.2000',
-      socialNumber: 7857487584
-    },
-    {
-      id: 3,
-      name: 'Василий',
-      phone: '+375 46 378-90-20',
-      email: 'test@mail.ru',
-      bday: '12.12.2000',
-      socialNumber: 7857487584
-    }
-  ]
-}
 
 const Table = (props) => {
-  const {user} = props;
-
-  if (!user) {
-    history.push(PATCHES.LOGIN)
-    return null;
-  }
-
-  const {headers, data} = contacts;
-
+  const {user, loadContacts, contacts, editContact, headers} = props;
   const [editingData, setEditingData] = useState(null);
   const [selectedDataCount, setSelectedDataCount] = useState(0);
 
-  const dataCount = data.length;
-
-  const openEditingModal = (data) => {
-    setEditingData(data)
+  if (!user) {
+    history.push(PATCHES.LOGIN);
+    return null;
   }
 
-  const closeEditingModal = () => {
-    setEditingData(null)
+  useEffect(() => {
+    loadContacts();
+  }, [])
+
+  if (!contacts) {
+    return null;
   }
+
+  const dataCount = contacts.length;
 
   const selectData = (isChecked) => {
     setSelectedDataCount(prevValue => isChecked ? prevValue + 1 : prevValue - 1)
@@ -75,14 +39,14 @@ const Table = (props) => {
       <div className="table">
         <table>
           <tbody>
-          <Row data={headers}/>
+          <Row data={headers} withCheckbox={false}/>
 
-          {data.map(item => {
+          {contacts.map(contact => {
             return (
               <Row
-                key={item.id}
-                data={item}
-                openEditingModal={openEditingModal}
+                key={contact.id}
+                data={contact}
+                openEditingModal={setEditingData}
                 selectData={selectData}
               />
             )
@@ -100,7 +64,8 @@ const Table = (props) => {
         <Editing
           headers={headers}
           data={editingData}
-          closeEditingModal={closeEditingModal}
+          closeEditingModal={setEditingData}
+          editContact={editContact}
         />
       }
 
@@ -108,8 +73,27 @@ const Table = (props) => {
   )
 }
 
+Table.propTypes = {
+  user: PropTypes.object,
+  loadContacts: PropTypes.func,
+  contacts: PropTypes.object,
+  editContact: PropTypes.func,
+  headers: PropTypes.object
+}
+
 const mapStateToProps = (state) => ({
-  user: state.user
+  user: state.user,
+  contacts: state.contacts,
+  headers: state.headers
 })
 
-export default connect(mapStateToProps)(Table);
+const mapDispatchToProps = (dispatch) => ({
+  loadContacts() {
+    dispatch(operation.loadContacts());
+  },
+  editContact(data) {
+    dispatch(operation.editContact(data))
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Table);

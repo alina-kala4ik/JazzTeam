@@ -1,16 +1,17 @@
 import React, {useRef} from "react";
+import PropTypes from "prop-types";
 
 const createInput = (header, headers, data) => {
   return (
     <label key={headers[header]}>
       <p>{headers[header]}: </p>
-      <input defaultValue={data[header]} className="editing_input" type="text"/>
+      <input name={header} defaultValue={data[header]} className="editing_input" type="text"/>
     </label>
   )
 }
 
 const Editing = (props) => {
-  const {headers, data, closeEditingModal} = props;
+  const {headers, data, closeEditingModal, editContact} = props;
 
   const formRef = useRef(null);
 
@@ -22,7 +23,7 @@ const Editing = (props) => {
         <button
           className="editing_close"
           type="button"
-          onClick={closeEditingModal}
+          onClick={() => {closeEditingModal(null)}}
         />
 
         <p className="editing_title">Редактирование личной информации</p>
@@ -34,8 +35,11 @@ const Editing = (props) => {
         <button
           onClick={(evt) => {
             evt.preventDefault();
-            const data = new FormData(formRef.current);
-            console.log(data)
+            const formData = new FormData(formRef.current);
+            const dataInObj = Object.fromEntries(formData);
+            dataInObj.id = data.id;
+            editContact(dataInObj);
+            closeEditingModal(null);
           }}
           className="editing_save"
           type="button"
@@ -45,6 +49,13 @@ const Editing = (props) => {
       </form>
     </div>
   )
+}
+
+Editing.propTypes = {
+  headers: PropTypes.object,
+  data: PropTypes.object,
+  closeEditingModal: PropTypes.func,
+  editContact: PropTypes.func
 }
 
 export default Editing;

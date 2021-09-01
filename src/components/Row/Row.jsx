@@ -1,7 +1,8 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const Row = (props) => {
-  const {data, openEditingModal, selectData} = props;
+  const {data, openEditingModal = () => {}, selectData = () => {}, withCheckbox = true} = props;
   const {name, phone, email, bday, socialNumber} = data;
 
   return (
@@ -12,12 +13,14 @@ const Row = (props) => {
       openEditingModal(data);
     }}>
       <td>
-        <input
-          onChange={(evt) => {
-            selectData(evt.target.checked);
-          }}
-          type="checkbox"
-        />
+        {withCheckbox &&
+          <input
+            onChange={(evt) => {
+              selectData(evt.target.checked);
+            }}
+            type="checkbox"
+          />
+        }
       </td>
       <td>{name}</td>
       <td>{phone}</td>
@@ -26,6 +29,13 @@ const Row = (props) => {
       <td>{socialNumber}</td>
     </tr>
   )
+}
+
+Row.propTypes = {
+  data: PropTypes.object,
+  openEditingModal: PropTypes.func,
+  selectData: PropTypes.func,
+  withCheckbox: PropTypes.bool
 }
 
 export default Row;
